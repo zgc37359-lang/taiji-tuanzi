@@ -37,6 +37,24 @@ BANNER_Y = 620
 BANNER_H = 720
 BANNER_RADIUS = 42
 
+# 底部动作条：名称、行号、代表性帧。0.75 倍缩放，192→144 / 208→156 均为整数。
+ACTIONS = [
+    ("待机", 0, 3),
+    ("右跑", 1, 4),
+    ("左跑", 2, 6),
+    ("抱拳", 3, 2),
+    ("轻跳", 4, 2),
+    ("失手", 5, 4),
+    ("等招", 6, 3),
+    ("推掌", 7, 3),
+    ("复核", 8, 3),
+]
+STRIP_SCALE = 0.75
+STRIP_CELL_W = round(192 * STRIP_SCALE)
+STRIP_CELL_H = round(208 * STRIP_SCALE)
+STRIP_GAP = 74
+STRIP_TOP = 2300
+
 
 def gradient(size, top, bottom):
     img = Image.new("RGB", size, top)
@@ -143,8 +161,29 @@ def main():
         fill=MUTED,
     )
 
-    centered(draw, 2300, "73 帧   ·   9 动作   ·   16 向视线   ·   MIT 开源", feet_font, SUB)
-    centered(draw, 2430, "github.com/zgc37359-lang/taiji-tuanzi", foot_font, GOLD)
+    centered(draw, 2240, "九个动作，对应 agent 的九种状态", ImageFont.truetype(REGULAR, 30, index=0), GOLD)
+
+    # 动作条
+    sheet = Image.open(ROOT / "spritesheet.webp").convert("RGBA")
+    strip_font = ImageFont.truetype(REGULAR, 26, index=0)
+    total_w = len(ACTIONS) * STRIP_CELL_W + (len(ACTIONS) - 1) * STRIP_GAP
+    start_x = (W - total_w) // 2
+    for index, (label, row, col) in enumerate(ACTIONS):
+        frame = sheet.crop(
+            (col * 192, row * 208, (col + 1) * 192, (row + 1) * 208)
+        ).resize((STRIP_CELL_W, STRIP_CELL_H), Image.LANCZOS)
+        x = start_x + index * (STRIP_CELL_W + STRIP_GAP)
+        canvas.alpha_composite(frame, (x, STRIP_TOP))
+        label_w = strip_font.getlength(label)
+        draw.text(
+            (x + (STRIP_CELL_W - label_w) / 2, STRIP_TOP + STRIP_CELL_H + 10),
+            label,
+            font=strip_font,
+            fill=MUTED,
+        )
+
+    centered(draw, 2560, "73 帧   ·   9 动作   ·   16 向视线   ·   MIT 开源", feet_font, SUB)
+    centered(draw, 2670, "github.com/zgc37359-lang/taiji-tuanzi", foot_font, GOLD)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     big = OUT_DIR / "vertical-2160x2880.png"
