@@ -1,17 +1,19 @@
 #!/usr/bin/env node
-// 校验仓库里的 Codex v2 宠物包：清单字段、图集格式与尺寸。
+// 校验仓库里的 Codex 宠物包：清单字段、图集格式与尺寸。
 // 用法：node scripts/validate-pet.cjs
 
 const fs = require("node:fs");
 const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
-const PACKAGES = ["", path.join("editions", "classic")];
+const PACKAGES = ["", path.join("editions", "classic"), path.join("editions", "v1")];
 
-const EXPECTED_WIDTH = 1536;
-const EXPECTED_HEIGHT = 2288;
 const COLUMNS = 8;
-const ROWS = 11;
+// Codex 的两套精灵图契约：v1 为 8×9，v2 为 8×11 并带 16 向视线。
+const CONTRACTS = new Map([
+  [1, { width: 1536, height: 1872, rows: 9, label: "9 动作" }],
+  [2, { width: 1536, height: 2288, rows: 11, label: "9 动作 + 16 视线" }],
+]);
 
 function fail(message) {
   throw new Error(message);
@@ -34,13 +36,14 @@ function readManifest(dir) {
       fail(`${field} 不能为空`);
     }
   }
-  if (manifest.spriteVersionNumber !== 2) {
-    fail("spriteVersionNumber 必须为 2，否则 Codex 会按 9 行 v1 读取并拒绝 2288 高度的图集");
+  const version = manifest.spriteVersionNumber ?? 1;
+  if (!CONTRACTS.has(version)) {
+    fail("spriteVersionNumber 必须是 1、2，或对 v1 省略");
   }
   if (typeof manifest.spritesheetPath !== "string" || !manifest.spritesheetPath.endsWith(".webp")) {
     fail("spritesheetPath 必须指向一个 .webp 文件");
   }
-  return manifest;
+  return { manifest, version };
 }
 
 // 从 WebP 容器里读出画布尺寸与是否带 alpha，避免引入解码依赖。
@@ -84,27 +87,30 @@ function readWebpInfo(file) {
 function checkPackage(relativeDir) {
   const dir = path.join(ROOT, relativeDir);
   const label = relativeDir || ".";
-  const manifest = readManifest(dir);
+  const { manifest, version } = readManifest(dir);
+  const contract = CONTRACTS.get(version);
   const sheet = path.resolve(dir, manifest.spritesheetPath);
   if (!fs.existsSync(sheet)) fail(`缺少图集 ${path.relative(ROOT, sheet)}`);
 
   const info = readWebpInfo(sheet);
-  if (info.width !== EXPECTED_WIDTH || info.height !== EXPECTED_HEIGHT) {
-    fail(`图集应为 ${EXPECTED_WIDTH}×${EXPECTED_HEIGHT}，实际 ${info.width}×${info.height}`);
+  if (info.width !== contract.width || info.height !== contract.height) {
+    fail(
+      `v${version} 图集应为 ${contract.width}×${contract.height}，实际 ${info.width}×${info.height}`
+    );
   }
   if (!info.alpha) fail("图集必须带透明通道");
 
   const cellWidth = info.width / COLUMNS;
-  const cellHeight = info.height / ROWS;
+  const cellHeight = info.height / contract.rows;
   if (!Number.isInteger(cellWidth) || !Number.isInteger(cellHeight)) {
-    fail(`图集无法被 ${COLUMNS}×${ROWS} 整除`);
+    fail(`图集无法被 ${COLUMNS}×${contract.rows} 整除`);
   }
 
   const bytes = fs.statSync(sheet).size;
   console.log(
     `✓ ${label} → ${manifest.id}（${manifest.displayName}）` +
-      ` · ${info.width}×${info.height} · 单元格 ${cellWidth}×${cellHeight}` +
-      ` · 9 动作 + 16 视线 · ${(bytes / 1024).toFixed(0)} KB`
+      ` · v${version} ${info.width}×${info.height} · 单元格 ${cellWidth}×${cellHeight}` +
+      ` · ${contract.label} · ${(bytes / 1024).toFixed(0)} KB`
   );
 }
 

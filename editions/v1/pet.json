@@ -1,0 +1,6 @@
+{
+  "id": "taiji-tuanzi-v1",
+  "displayName": "太极团子 · v1",
+  "description": "8×9 的 1536×1872 版本，给仍按 v1 契约读取的运行器使用。",
+  "spritesheetPath": "spritesheet.webp"
+}

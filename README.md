@@ -88,6 +88,17 @@ mkdir -p ~/.codex/pets/taiji-tuanzi-classic
 cp editions/classic/pet.json editions/classic/spritesheet.webp ~/.codex/pets/taiji-tuanzi-classic/
 ```
 
+### v1 兼容包（旧版运行器）
+
+如果运行器仍按 v1 契约读 8×9 的 `1536 × 1872` 图集：
+
+```bash
+mkdir -p ~/.codex/pets/taiji-tuanzi-v1
+cp editions/v1/pet.json editions/v1/spritesheet.webp ~/.codex/pets/taiji-tuanzi-v1/
+```
+
+这份 `pet.json` 不写 `spriteVersionNumber`（等同 `1`），图集是默认版前九行，不含 16 向视线。
+
 > [!NOTE]
 > Windows 上的 Codex Desktop 如果使用 WSL 后端，可能发现不了已正确安装的自定义宠物。这是上游问题 [openai/codex#20730](https://github.com/openai/codex/issues/20730)。先确认两个文件在同一目录、`pet.json` 里的 `id` 正确，再考虑临时把任务执行后端切到 Windows 原生模式；不要为此修改 `pet.json` 或重做图集。
 
@@ -121,10 +132,11 @@ cp editions/classic/pet.json editions/classic/spritesheet.webp ~/.codex/pets/tai
 | --- | --- |
 | [pet.json](pet.json) / [spritesheet.webp](spritesheet.webp) | 默认版宠物包，装进 `~/.codex/pets/taiji-tuanzi/` |
 | [editions/classic/](editions/classic/) | 初版配色的同规格包 |
+| [editions/v1/](editions/v1/) | 8×9 / 1536×1872 的 v1 兼容包 |
 | [previews/](previews/) | README 用的动作 GIF 与视线总览 |
 | [scripts/build-previews.py](scripts/build-previews.py) | 从图集重新生成预览（需要 Pillow） |
 | [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
-| [assets/](assets/) | 宣传图与 PNG 母版 |
+| [assets/](assets/) | 宣传图、社交预览图与 PNG 母版 |
 
 改完图集或清单，跑一遍校验：
 
