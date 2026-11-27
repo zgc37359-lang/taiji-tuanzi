@@ -1,0 +1,14 @@
+# GitHub 语言统计规则：明确脚本归属，避免安装脚本被归错语言
+*.cjs linguist-language=JavaScript
+install.sh linguist-language=Shell
+install.ps1 linguist-language=PowerShell
+
+# 本地生成脚本不计入语言统计
+*.py linguist-detectable=false
+
+# 素材与预览图不参与统计
+previews/** linguist-detectable=false
+assets/** linguist-detectable=false
+*.webp linguist-detectable=false
+*.gif linguist-detectable=false
+*.png linguist-detectable=false
