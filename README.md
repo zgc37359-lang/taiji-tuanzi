@@ -1,69 +1,142 @@
 <p align="center">
-  <img src="assets/readme-cover.webp" alt="太极团子站在翡翠色练功台上，金色气流绕身" width="100%">
+  <img src="assets/readme-cover.webp" alt="太极团子：青玉团子立于圆形石台，金色气流绕身" width="100%">
 </p>
 
-<h1 align="center">太极团子 · 练功场</h1>
-<p align="center"><strong>往左跑，往右跑。往上一拽，一飞冲天。往下一拽，原地遁地。</strong></p>
+<h1 align="center">太极团子 · Codex 宠物</h1>
+<p align="center"><strong>一只打太极的青玉团子，装进 Codex，陪你写完每一段代码。</strong></p>
 <p align="center">
-  <a href="https://github.com/zgc37359-lang/taiji-tuanzi/archive/refs/heads/main.zip"><img alt="下载练功场 ZIP" src="https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD-%E7%BB%83%E5%8A%9F%E5%9C%BA-E5AD3C?style=for-the-badge"></a>
-  <a href="pets/spritesheet-v2.png"><img alt="下载 Pets v2 精灵图" src="https://img.shields.io/badge/ChatGPT_Work-Pets_v2-23594D?style=for-the-badge"></a>
+  <a href="pet.json"><img alt="Codex 宠物包 v2" src="https://img.shields.io/badge/Codex_Pet-v2-23594D?style=for-the-badge"></a>
+  <a href="spritesheet.webp"><img alt="1536 × 2288 图集，73 帧" src="https://img.shields.io/badge/Atlas-1536%C3%972288_%C2%B7_73_frames-E5AD3C?style=for-the-badge"></a>
   <a href="LICENSE"><img alt="MIT 许可证" src="https://img.shields.io/badge/License-MIT-29292B?style=for-the-badge"></a>
 </p>
 
-## 🥋 上场试招
+太极团子是一套可直接安装的 **Codex 原生 v2 宠物资源包**：两个文件放进 `~/.codex/pets/`，重启 Codex 就能在「设置 → Pets」里选到它。仓库不包含任何监听程序或网页，只有宠物本身。
 
-<p align="center">
-  <img src="assets/drag-preview.gif" alt="左侧演示团子冲出画面再落回，右侧演示团子没入地下再探头" width="734">
-</p>
+## 🥋 动作图鉴
 
-| 手势 | 团子的反应 |
+| 待机 | 向右跑 | 向左跑 |
+| :---: | :---: | :---: |
+| <img src="previews/idle.gif" width="150" alt="太极团子待机"> | <img src="previews/running-right.gif" width="150" alt="太极团子向右跑"> | <img src="previews/running-left.gif" width="150" alt="太极团子向左跑"> |
+| `idle` · 吐纳呼吸 | `running-right` | `running-left` |
+
+| 抱拳招呼 | 轻跳 | 失手 |
+| :---: | :---: | :---: |
+| <img src="previews/waving.gif" width="150" alt="太极团子抱拳招呼"> | <img src="previews/jumping.gif" width="150" alt="太极团子轻跳"> | <img src="previews/failed.gif" width="150" alt="太极团子失手"> |
+| `waving` · 启动与点击互动 | `jumping` · 任务完成庆祝 | `failed` · 任务失败 |
+
+| 等你确认 | 推掌 | 复核 |
+| :---: | :---: | :---: |
+| <img src="previews/waiting.gif" width="150" alt="太极团子等你确认"> | <img src="previews/running.gif" width="150" alt="太极团子推掌"> | <img src="previews/review.gif" width="150" alt="太极团子复核"> |
+| `waiting` · 需要输入或审批 | `running` · 任务进行中 | `review` · 检查结果 |
+
+<details>
+  <summary><b>展开 16 向视线总览</b></summary>
+  <br>
+  <p align="center">
+    <img src="previews/look-directions.png" width="620" alt="16 个顺时针视线方向，上为 000">
+  </p>
+  <p align="center"><sub>第 9–10 行共 16 格，从正上方 000 起每 22.5° 一格；运行器支持时团子会跟着鼠标转视线。</sub></p>
+</details>
+
+## ⚡ 安装
+
+Codex v2 宠物只需要两个文件：
+
+```text
+~/.codex/pets/taiji-tuanzi/
+├── pet.json
+└── spritesheet.webp
+```
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/zgc37359-lang/taiji-tuanzi.git
+cd taiji-tuanzi
+mkdir -p ~/.codex/pets/taiji-tuanzi
+cp pet.json spritesheet.webp ~/.codex/pets/taiji-tuanzi/
+```
+
+### Windows（PowerShell）
+
+```powershell
+git clone https://github.com/zgc37359-lang/taiji-tuanzi.git
+Set-Location .\taiji-tuanzi
+$petDir = Join-Path $env:USERPROFILE ".codex\pets\taiji-tuanzi"
+New-Item -ItemType Directory -Force -Path $petDir | Out-Null
+Copy-Item pet.json, spritesheet.webp -Destination $petDir -Force
+```
+
+不想克隆也可以直接下载 [pet.json](https://raw.githubusercontent.com/zgc37359-lang/taiji-tuanzi/main/pet.json) 和 [spritesheet.webp](https://raw.githubusercontent.com/zgc37359-lang/taiji-tuanzi/main/spritesheet.webp)，一起放进 `%USERPROFILE%\.codex\pets\taiji-tuanzi\`。
+
+### 启用
+
+重启 Codex，打开 **设置 → Pets**，刷新桌宠列表，选择 **太极团子**。
+
+### 初版配色（可选）
+
+仓库里还留了初版美术，规格相同、动作更收敛，可以和加强版同时装：
+
+```bash
+mkdir -p ~/.codex/pets/taiji-tuanzi-classic
+cp editions/classic/pet.json editions/classic/spritesheet.webp ~/.codex/pets/taiji-tuanzi-classic/
+```
+
+> [!NOTE]
+> Windows 上的 Codex Desktop 如果使用 WSL 后端，可能发现不了已正确安装的自定义宠物。这是上游问题 [openai/codex#20730](https://github.com/openai/codex/issues/20730)。先确认两个文件在同一目录、`pet.json` 里的 `id` 正确，再考虑临时把任务执行后端切到 Windows 原生模式；不要为此修改 `pet.json` 或重做图集。
+
+## 🧬 图集规格
+
+| 项目 | 值 |
 | --- | --- |
-| **← → 左右拖** | 顺着指针跑，反向拖就掉头，松手收势 |
-| **↑ 向上拖** | 屈膝蓄力，冲出画面顶部，再落回练功台 |
-| **↓ 向下拖** | 低头按掌，整只钻进地里，再探头钻出来 |
-| **点按 / 移动指针** | 点按会抱拳挥掌，待机时绿眼睛会跟着指针转 |
+| 尺寸 | `1536 × 2288`，8 列 × 11 行 |
+| 单元格 | `192 × 208` |
+| 格式 | WebP，透明 RGBA |
+| 帧数 | 73 帧（57 帧动作 + 16 向视线） |
+| 版本字段 | `spriteVersionNumber: 2` |
+| 行序 | 第 0–8 行为九种标准状态，第 9–10 行为 16 向视线 |
 
-想过招就点 **「开始跟练」**，连做招呼、右移、左移、轻跳、推掌五个动作。想看动作做了哪些变化，点右上角切换初版与加强版。
+| 行 | Codex 状态 | 团子的演绎 |
+| --- | --- | --- |
+| 0 | `idle` | 吐纳待机 |
+| 1 | `running-right` | 向右跑 |
+| 2 | `running-left` | 向左跑 |
+| 3 | `waving` | 抱拳招呼 |
+| 4 | `jumping` | 轻跳 |
+| 5 | `failed` | 失手 |
+| 6 | `waiting` | 等招（需要确认） |
+| 7 | `running` | 推掌（任务进行中） |
+| 8 | `review` | 复核 |
+| 9–10 | 视线 | 000 为正上，顺时针每格 22.5° |
 
-点击场地后也能用方向键和空格。手机和平板可以直接用手指拖动。
-
-## ⚡ 三步开练
-
-1. [下载 ZIP](https://github.com/zgc37359-lang/taiji-tuanzi/archive/refs/heads/main.zip)。
-2. 解压后用现代浏览器打开 `index.html`。
-3. 按住团子，往上拖。
-
-页面由 HTML、CSS 和原生 JavaScript 构成，无需安装依赖。开发时也可以在仓库根目录启动静态服务器，再打开 `http://localhost:8000/`。
-
-```bash
-python -m http.server 8000
-```
-
-修改交互后，用 Node.js 20 或更新版本跑一遍检查。
-
-```bash
-node test/interactions.cjs
-```
-
-测试涵盖横拖换向、冲天回场、遁地遮挡、点按、键盘、版本切换和五步跟练。
-
-## 🐾 把团子带进 ChatGPT Work
-
-[下载 Pets v2 精灵图](pets/spritesheet-v2.png)，交给支持自定义宠物的 Pets 插件校验并上传。透明 PNG 尺寸为 **1536 × 2288**，包含 **73 帧**、**9 种状态动画**和 **16 个视线方向**。
-
-**冲天和遁地是网页练功场的招式。** ChatGPT Work 当前的 Pets 格式没有开放纵向拖动的动作绑定。[纵向动作素材](assets/vertical-poses.webp)
-
-## 🛠 拆开看看
+## 🛠 仓库结构
 
 | 路径 | 内容 |
 | --- | --- |
-| [index.html](index.html) / [assets/playground.css](assets/playground.css) | 试玩页面与样式 |
-| [src/playground.js](src/playground.js) | 拖动判定、逐帧播放、跟练与版本切换 |
-| [pets/](pets/) | ChatGPT Work 兼容精灵图 |
-| [assets/](assets/) | 初版素材、纵向动作和演示动图 |
-| [test/interactions.cjs](test/interactions.cjs) | 交互逻辑检查 |
+| [pet.json](pet.json) / [spritesheet.webp](spritesheet.webp) | 默认版宠物包，装进 `~/.codex/pets/taiji-tuanzi/` |
+| [editions/classic/](editions/classic/) | 初版配色的同规格包 |
+| [previews/](previews/) | README 用的动作 GIF 与视线总览 |
+| [scripts/build-previews.py](scripts/build-previews.py) | 从图集重新生成预览（需要 Pillow） |
+| [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
+| [assets/](assets/) | 宣传图与 PNG 母版 |
 
-代码和发行素材使用 [MIT 许可证](LICENSE)。
+改完图集或清单，跑一遍校验：
+
+```bash
+node scripts/validate-pet.cjs
+```
+
+它会检查两个包的 `pet.json` 字段、`spriteVersionNumber: 2`、WebP 容器头、`1536 × 2288` 尺寸与透明通道。
+
+重新生成 README 里的预览 GIF：
+
+```bash
+python scripts/build-previews.py
+```
+
+## 许可
+
+代码和素材使用 [MIT 许可证](LICENSE)。
 
 ## ⭐ Star History
 
