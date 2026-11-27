@@ -149,13 +149,10 @@ cp editions/v1/pet.json editions/v1/spritesheet.webp ~/.codex/pets/taiji-tuanzi-
 | [pet.json](pet.json) / [spritesheet.webp](spritesheet.webp) | 默认版宠物包，装进 `~/.codex/pets/taiji-tuanzi/` |
 | [editions/classic/](editions/classic/) | 初版配色的同规格包 |
 | [editions/v1/](editions/v1/) | 8×9 / 1536×1872 的 v1 兼容包 |
-| [previews/](previews/) | README 用的动作 GIF 与视线总览 |
-| [scripts/build-previews.py](scripts/build-previews.py) | 从图集重新生成预览（需要 Pillow） |
-| [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
-| [scripts/build-share-image.py](scripts/build-share-image.py) | 生成竖屏分享图（2160×2880 / 1080×1440） |
-| [assets/share/](assets/share/) | 分享用的竖屏图，带一键安装命令 |
 | [install.sh](install.sh) / [install.ps1](install.ps1) | 一行安装脚本，支持 `CODEX_HOME` 与多版本 |
-| [assets/](assets/) | 宣传图、社交预览图与 PNG 母版 |
+| [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
+| [previews/](previews/) | README 用的动作 GIF 与视线总览 |
+| [assets/](assets/) | README 顶部宣传图 |
 
 改完图集或清单，跑一遍校验：
 
@@ -163,13 +160,7 @@ cp editions/v1/pet.json editions/v1/spritesheet.webp ~/.codex/pets/taiji-tuanzi-
 node scripts/validate-pet.cjs
 ```
 
-它会检查两个包的 `pet.json` 字段、`spriteVersionNumber: 2`、WebP 容器头、`1536 × 2288` 尺寸与透明通道。
-
-重新生成 README 里的预览 GIF：
-
-```bash
-python scripts/build-previews.py
-```
+它会按各包 `pet.json` 里的 `spriteVersionNumber` 选择 v1 或 v2 契约，检查字段、WebP 容器头、尺寸与透明通道。
 
 ## 许可
 
