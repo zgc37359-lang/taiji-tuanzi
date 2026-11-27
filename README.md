@@ -50,7 +50,23 @@ Codex v2 宠物只需要两个文件：
 └── spritesheet.webp
 ```
 
-### 下载安装包（最快）
+### 一行安装（推荐）
+
+macOS / Linux：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zgc37359-lang/taiji-tuanzi/main/install.sh | sh
+```
+
+Windows（PowerShell）：
+
+```powershell
+irm https://raw.githubusercontent.com/zgc37359-lang/taiji-tuanzi/main/install.ps1 | iex
+```
+
+想连初版配色和 v1 兼容包一起装，加一个环境变量：`TAIJI_TUANZI_EDITIONS=1`（PowerShell 用 `$env:TAIJI_TUANZI_EDITIONS=1`）。
+
+### 下载安装包
 
 从 [v1.0.0 Release](https://github.com/zgc37359-lang/taiji-tuanzi/releases/download/v1.0.0/taiji-tuanzi-v1.0.0.zip) 下载 zip，解压后把 `pet.json` 和 `spritesheet.webp` 放进上面的目录。
 
@@ -136,6 +152,7 @@ cp editions/v1/pet.json editions/v1/spritesheet.webp ~/.codex/pets/taiji-tuanzi-
 | [previews/](previews/) | README 用的动作 GIF 与视线总览 |
 | [scripts/build-previews.py](scripts/build-previews.py) | 从图集重新生成预览（需要 Pillow） |
 | [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
+| [install.sh](install.sh) / [install.ps1](install.ps1) | 一行安装脚本，支持 `CODEX_HOME` 与多版本 |
 | [assets/](assets/) | 宣传图、社交预览图与 PNG 母版 |
 
 改完图集或清单，跑一遍校验：
