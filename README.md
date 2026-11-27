@@ -10,6 +10,8 @@
   <a href="LICENSE"><img alt="MIT 许可证" src="https://img.shields.io/badge/License-MIT-29292B?style=for-the-badge"></a>
 </p>
 
+<p align="center"><sub><b>English</b> · Taiji Tuanzi is a taiji-practicing pet for Codex, shipped as a native v2 atlas (1536×2288, 8 columns × 11 rows, 192×208 cells, WebP with alpha). Unzip <a href="https://github.com/zgc37359-lang/taiji-tuanzi/releases/download/v1.0.0/taiji-tuanzi-v1.0.0.zip">v1.0.0</a>, copy <code>pet.json</code> + <code>spritesheet.webp</code> into <code>~/.codex/pets/taiji-tuanzi/</code>, restart Codex, then pick 太极团子 under <b>Settings → Pets</b>.</sub></p>
+
 太极团子是一套可直接安装的 **Codex 原生 v2 宠物资源包**：两个文件放进 `~/.codex/pets/`，重启 Codex 就能在「设置 → Pets」里选到它。仓库不包含任何监听程序或网页，只有宠物本身。
 
 ## 🥋 动作图鉴
@@ -47,6 +49,10 @@ Codex v2 宠物只需要两个文件：
 ├── pet.json
 └── spritesheet.webp
 ```
+
+### 下载安装包（最快）
+
+从 [v1.0.0 Release](https://github.com/zgc37359-lang/taiji-tuanzi/releases/download/v1.0.0/taiji-tuanzi-v1.0.0.zip) 下载 zip，解压后把 `pet.json` 和 `spritesheet.webp` 放进上面的目录。
 
 ### macOS / Linux
 
