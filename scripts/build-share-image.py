@@ -34,9 +34,8 @@ CURL = [
 PS1 = "irm " + BASE + "/install.ps1 | iex"
 
 BANNER_Y = 620
-BANNER_H = 810
+BANNER_H = 720
 BANNER_RADIUS = 42
-BANNER_ZOOM = 1.35
 
 
 def gradient(size, top, bottom):
@@ -67,27 +66,25 @@ def centered(draw, y, text, font, fill):
 
 
 def build_banner():
-    """等比放大后居中裁切，避免直接裁掉原图两侧的主体。"""
+    """严格等比缩放到画布宽度，不裁切、不拉伸。"""
     cover = Image.open(COVER).convert("RGB")
-    zoomed = cover.resize(
-        (round(cover.width * BANNER_ZOOM), round(cover.height * BANNER_ZOOM)),
-        Image.LANCZOS,
-    )
-    # 目标横幅高度由宽度推出来，防止比例失真
-    target_h = round(W * zoomed.height / zoomed.width)
-    if target_h < BANNER_H:
-        zoomed = zoomed.resize((round(zoomed.width * BANNER_H / target_h), BANNER_H), Image.LANCZOS)
-        target_h = BANNER_H
-    left = max(0, (zoomed.width - W) // 2)
-    top = max(0, (zoomed.height - target_h) // 2)
-    banner = zoomed.crop((left, top, left + W, top + target_h)).convert("RGBA")
+    width = W
+    height = round(cover.height * width / cover.width)
+    banner = cover.resize((width, height), Image.LANCZOS).convert("RGBA")
     if banner.height != BANNER_H:
         banner = banner.resize((W, BANNER_H), Image.LANCZOS)
+    # 自检：缩放后宽高比必须与原图一致，差值超过 0.5% 视为变形
+    source_ratio = cover.width / cover.height
+    result_ratio = banner.width / banner.height
+    if abs(source_ratio - result_ratio) / source_ratio > 0.005:
+        raise SystemExit(
+            f"横幅比例失真：原图 {source_ratio:.3f}，结果 {result_ratio:.3f}"
+        )
     mask = Image.new("L", banner.size, 0)
     ImageDraw.Draw(mask).rounded_rectangle(
         [(0, 0), (banner.width - 1, banner.height - 1)], radius=BANNER_RADIUS, fill=255
     )
-    return banner, mask
+    return banner, mask, source_ratio
 
 
 def main():
@@ -107,7 +104,7 @@ def main():
     centered(draw, 200, "太极团子", title_font, INK)
     centered(draw, 500, "一只打太极的青玉团子，装进 Codex 陪你写完每一段代码", sub_font, SUB)
 
-    banner, mask = build_banner()
+    banner, mask, ratio = build_banner()
     canvas.paste(banner, (0, BANNER_Y), mask)
     draw.rounded_rectangle(
         [(0, BANNER_Y), (W - 1, BANNER_Y + BANNER_H - 1)],
@@ -116,7 +113,7 @@ def main():
         width=3,
     )
 
-    card_x, card_y, card_w, card_h = 135, 1520, W - 270, 780
+    card_x, card_y, card_w, card_h = 135, 1430, W - 270, 780
     draw.rounded_rectangle(
         [(card_x, card_y), (card_x + card_w, card_y + card_h)],
         radius=44,
@@ -146,8 +143,8 @@ def main():
         fill=MUTED,
     )
 
-    centered(draw, 2380, "73 帧   ·   9 动作   ·   16 向视线   ·   MIT 开源", feet_font, SUB)
-    centered(draw, 2510, "github.com/zgc37359-lang/taiji-tuanzi", foot_font, GOLD)
+    centered(draw, 2300, "73 帧   ·   9 动作   ·   16 向视线   ·   MIT 开源", feet_font, SUB)
+    centered(draw, 2430, "github.com/zgc37359-lang/taiji-tuanzi", foot_font, GOLD)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     big = OUT_DIR / "vertical-2160x2880.png"
@@ -157,7 +154,7 @@ def main():
     small = OUT_DIR / "vertical-1080x1440.png"
     canvas.convert("RGB").resize((1080, 1440), Image.LANCZOS).save(small, "PNG", optimize=True)
 
-    print(f"横幅：{banner.width}×{banner.height} @ y={BANNER_Y}（原图放大 {BANNER_ZOOM}× 后居中裁切）")
+    print(f"横幅：{banner.width}×{banner.height} @ y={BANNER_Y}（原图比例 {ratio:.3f}，结果比例 {banner.width / banner.height:.3f}）")
     print(f"命令字号：curl {mono_font.size}px（宽 {mono_font.getlength(CURL[1]):.0f}px / 上限 {inner:.0f}px）")
     print(f"           ps1 {ps_font.size}px（宽 {ps_font.getlength(PS1):.0f}px）")
     for path in (big, jpg, small):
