@@ -152,6 +152,8 @@ cp editions/v1/pet.json editions/v1/spritesheet.webp ~/.codex/pets/taiji-tuanzi-
 | [previews/](previews/) | README 用的动作 GIF 与视线总览 |
 | [scripts/build-previews.py](scripts/build-previews.py) | 从图集重新生成预览（需要 Pillow） |
 | [scripts/validate-pet.cjs](scripts/validate-pet.cjs) | 校验清单字段与图集尺寸 |
+| [scripts/build-share-image.py](scripts/build-share-image.py) | 生成竖屏分享图（2160×2880 / 1080×1440） |
+| [assets/share/](assets/share/) | 分享用的竖屏图，带一键安装命令 |
 | [install.sh](install.sh) / [install.ps1](install.ps1) | 一行安装脚本，支持 `CODEX_HOME` 与多版本 |
 | [assets/](assets/) | 宣传图、社交预览图与 PNG 母版 |
 
